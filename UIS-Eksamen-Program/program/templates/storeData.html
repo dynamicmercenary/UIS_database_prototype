@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>{{ current_user.name }}</h1>
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.targetWeekday.label(class="form-control-label") }}
+                {{ form.targetWeekday(class="form-control")}}
+            </div>
+            <div class="form-group">
+                {{ form.targetFirstShift.label(class="form-control-label") }}
+                {{ form.targetFirstShift(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.targetScala.label(class="form-control-label") }}
+                {{ form.targetScala(class="form-control") }}
+            </div>
+        </form>
+    </div>
+	
+{% endblock content %}

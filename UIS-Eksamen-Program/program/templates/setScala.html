@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.sourceShop.label(class="form-control-label") }}
+                {{ form.sourceShop(class="form-control")}}
+            </div>
+            <div class="form-group">
+                {{ form.sourceScala.label(class="form-control-label") }}
+                {{ form.sourceScala(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+            <div class="form-group">
+                {{ form.targetScala.label(class="form-control-label") }}
+                {{ form.targetScala(class="form-control") }}
+            </div>
+        </form>
+    </div>
+	
+{% endblock content %}
