@@ -4,7 +4,7 @@ from numpy.lib.utils import source
 from program import app, con, bcrypt
 from program.forms import AdjustAccountForm, setWeekdayForm, regionForm, setScalaForm, setFirstShiftForm, scalaForm, harProgramForm, storeDataForm
 from flask_login import current_user
-from program.sqllibrary import Volunteer, getWeekdayV, getFirstShiftV,changePassword, checkPassword,getScalaV, findStoresV, updateScale, getName, updateFirstshift, updateWeekday
+from program.sqllibrary import Volunteer, getWeekdayV, getFirstShiftV,changePassword, checkPassword,getScalaV, findStoreV, updateScale, getName, updateFirstshift, updateWeekday
 
 Volunteer = Blueprint('Volunteer', __name__)
 
@@ -15,7 +15,7 @@ def setScala():
         flash('Please Login.','danger')
         return redirect(url_for('Login.login'))
     form = setScalaForm()
-    Shop = findStoresV(ID)
+    Shop = findStoreV(ID)
     form.sourceShop.choices = Shop
     drp_scale = []
     for i in range(1,11):
@@ -55,7 +55,7 @@ def setFirstShift():
         flash('Please Login.','danger')
         return redirect(url_for('Login.login'))
     form = setFirstShiftForm()
-    Shop = findStoresV(ID)
+    Shop = findStoreV(ID)
     form.sourceShop.choices = Shop
     FirstShift = form.sourceFirstShift.data 
     if form.validate_on_submit():
@@ -76,8 +76,8 @@ def setWeekday():
         flash('Please Login.','danger')
         return redirect(url_for('Login.login'))
     form = setWeekdayForm()
-    Shop = findStoresV(ID)
-    form.sourceShop.choices = Shop
+    Shop = findStoreV(ID)
+    form.sourceStore.choices = Shop
     drp_weekday = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday']
     form.sourceWeekday.choices = drp_weekday
     Weekday = form.sourceWeekday.data 

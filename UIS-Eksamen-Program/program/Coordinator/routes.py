@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, redirect, request, Blueprint
 from program import app, con, bcrypt
 from program.forms import regionForm, scalaForm, contactinfoForm, harProgramForm
 from flask_login import current_user
-from program.sqllibrary import Coordinator, createUser, findStores, getRegions, getScala, deleteUser, getInfo, checkForProgram, deleteEntityHarProgram, updateHarProgramToTrue, getName
+from program.sqllibrary import Coordinator, createUser, findStores, getRegions, findScala, deleteUser, getInfo, checkForProgram, deleteEntityHarProgram, updateHarProgramToTrue, getName
 
 Coordinator = Blueprint('coordinator', __name__)
 
@@ -25,11 +25,11 @@ def findStoresInRegion():
     for drp in dropdown_regions:
         drp_regions.append((str(drp[0])+' '+ str(drp[1])))
         print(drp_regions)
-    form.targetRegion.choices = drp_regions
+    form.targetStores.choices = drp_regions
     return render_template('findstores.html', form = form)
 
 @Coordinator.route("/findscala", methods = ['GET', 'POST'])
-def getScales():
+def findScalesInRegion():
     ID = current_user.get_id()
     if not current_user.is_authenticated or not ID == 6000:
         flash('Please Login as Coordinator.','danger')
@@ -42,7 +42,7 @@ def getScales():
     form.sourceRegions.choices = drp_sourceRegions
     print(drp_sourceRegions)
     region = form.sourceRegions.data
-    dropdown_scales = getScala(region)
+    dropdown_scales = findScala(region)
     drp_scales = []
     for drp in dropdown_scales:
         drp_scales.append((str(drp[1]) + ': ' +str(drp[0]) + ' with ' + str(drp[2]) + ' as weekday'))
@@ -51,7 +51,7 @@ def getScales():
     return render_template('findscales.html', form = form)
 
 @Coordinator.route("/findcontactinfo", methods = ['GET', 'POST'])
-def getContactinfo():
+def findContactinfoOfStore():
     ID = current_user.get_id()
     if not current_user.is_authenticated or not ID == 6000:
         flash('Please Login as Coordinator.','danger')

@@ -78,7 +78,7 @@ def findStores(region):
     cur.close()
     return tuple_resultset
 
-def findStoresV(ID):
+def findStoreV(ID):
     cur = con.cursor()
     sql = '''
     SELECT bID, navn
@@ -101,7 +101,7 @@ def getRegions():
     cur.close()
     return tuple_resultset
 
-def getScala(region):
+def findScala(region):
     cur = con.cursor()
     sql = '''
     SELECT p.Scala, b.navn, p.ugedag

@@ -6,7 +6,7 @@ from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
 class regionForm(FlaskForm):
     sourceRegions = SelectField('Region:' , choices=[], coerce = str, validators=[DataRequired()])
     submit = SubmitField('Confirm')
-    targetRegion = SelectField('Stores:', choices=[])
+    targetStores = SelectField('Stores:', choices=[])
    
 
 class VolunteerLoginForm(FlaskForm):

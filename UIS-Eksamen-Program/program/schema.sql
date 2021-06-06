@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS Volunteer(
     id integer PRIMARY KEY,
     name varchar(20),
     password varchar(120) default '$2b$12$KFkp1IEMGT4QrWwjPGhE3ejOv6Z3pYhx/S4qOoFbanR2sMiZqgeJO',
-    CONSTRAINT butiks_ID FOREIGN KEY (id) REFERENCES Butik (bID)
+    CONSTRAINT butiks_ID FOREIGN KEY (id) REFERENCES Butik (bID),
+    CONSTRAINT butiks_navn FOREIGN KEY (name) REFERENCES Butik (navn)
 );
 
 CREATE TABLE IF NOT EXISTS Butik(
@@ -24,7 +25,7 @@ CREATE TABLE IF NOT EXISTS Butik(
 );
 
 CREATE TABLE IF NOT EXISTS harProgram(
-    pID integer NOT NULL,
+    pID integer PRIMARY KEY,
     Ugedag varchar(10),
     scala integer default 0,
     CONSTRAINT butiks_ID FOREIGN KEY (pID) REFERENCES Butik (bID),
