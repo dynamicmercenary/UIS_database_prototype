@@ -8,10 +8,10 @@ def load_user(user_id):
     cur = con.cursor()
 
     schema = 'volunteer'
-    id = 'id'
+    id = 'vid'
     if str(user_id).startswith('60'):
         schema = 'coordinator'
-        id = 'id'
+        id = 'cid'
 
     user_sql = sql.SQL("""
     SELECT * FROM {}
@@ -47,7 +47,7 @@ def select_Volunteer(ID):
     cur = con.cursor()
     sql = """
     SELECT * FROM Volunteer
-    WHERE ID = %s
+    WHERE vID = %s
     """
     cur.execute(sql, (ID,))
     user = Volunteer(cur.fetchone()) if cur.rowcount > 0 else None;
@@ -58,7 +58,7 @@ def select_Coordinator(ID):
     cur = con.cursor()
     sql = """
     SELECT * FROM Coordinator
-    WHERE ID = %s
+    WHERE cID = %s
     """
     cur.execute(sql, (ID,))
     user = Coordinator(cur.fetchone()) if cur.rowcount > 0 else None;
@@ -68,10 +68,10 @@ def select_Coordinator(ID):
 def findStores(region):
     cur = con.cursor()
     sql = '''
-    SELECT bID, navn
-    FROM butik
+    SELECT sID, name
+    FROM Store
     WHERE region = %s
-    ORDER BY bID           
+    ORDER BY sID           
     '''
     cur.execute(sql, (region,))   
     tuple_resultset = cur.fetchall()
@@ -81,9 +81,9 @@ def findStores(region):
 def findStoreV(ID):
     cur = con.cursor()
     sql = '''
-    SELECT bID, navn
-    FROM Butik 
-    WHERE bid = %s         
+    SELECT sID, name
+    FROM Store 
+    WHERE sID = %s         
     '''
     cur.execute(sql, (ID,))   
     tuple_resultset = cur.fetchall()
@@ -94,7 +94,7 @@ def getRegions():
     cur = con.cursor()
     sql = '''
     SELECT DISTINCT region
-    FROM butik         
+    FROM Store         
     '''
     cur.execute(sql)   
     tuple_resultset = cur.fetchall()
@@ -104,10 +104,10 @@ def getRegions():
 def findScala(region):
     cur = con.cursor()
     sql = '''
-    SELECT p.Scala, b.navn, p.ugedag
-    FROM harProgram AS p
-        INNER JOIN BUTIK AS b
-            ON b.har_program = true AND p.pID = b.bID
+    SELECT p.Scala, s.name, p.weekDay
+    FROM hasProgram AS p
+        INNER JOIN Store AS s
+            ON s.hasProgram = true AND p.pID = s.sID
     WHERE region = %s
     ORDER BY p.scala DESC           
     '''
@@ -120,7 +120,7 @@ def getScalaV(ID):
     cur = con.cursor()
     sql = '''
     SELECT scala
-    FROM harProgram
+    FROM hasProgram
     WHERE pID = %s          
     '''
     cur.execute(sql, (ID,))   
@@ -131,8 +131,8 @@ def getScalaV(ID):
 def getWeekdayV(ID):
     cur = con.cursor()
     sql = '''
-    SELECT Ugedag
-    FROM harProgram
+    SELECT weekDay
+    FROM hasProgram
     WHERE pID = %s          
     '''
     cur.execute(sql, (ID,))   
@@ -143,8 +143,8 @@ def getWeekdayV(ID):
 def getFirstShiftV(ID):
     cur = con.cursor()
     sql = '''
-    SELECT first_shift
-    FROM harProgram
+    SELECT firstShift
+    FROM hasProgram
     WHERE pID = %s          
     '''
     cur.execute(sql, (ID,))   
@@ -155,61 +155,61 @@ def getFirstShiftV(ID):
 def getInfo(id):
     cur = con.cursor()
     sql = '''
-    SELECT navn, email, telefon
-    FROM butik
-    WHERE bID = %s           
+    SELECT name, email, telephone
+    FROM Store
+    WHERE sID = %s           
     '''
     cur.execute(sql, (id,))   
     tuple_resultset = cur.fetchone()
     cur.close()
     return tuple_resultset
 
-def updateScale(update, bID):
+def updateScale(update, sID):
     cur = con.cursor()
     sql = '''
-    UPDATE harProgram
+    UPDATE hasProgram
     SET scala = %s
     WHERE pID = %s           
     '''
-    cur.execute(sql, (update, bID,)) 
+    cur.execute(sql, (update, sID,)) 
     con.commit()  
     cur.close()
 
-def getName(bID):
+def getName(sID):
     cur = con.cursor()
     sql = '''
-    SELECT navn
-    FROM butik
-    WHERE bID = %s           
+    SELECT name
+    FROM Store
+    WHERE sID = %s           
     '''
-    cur.execute(sql, (bID,))   
+    cur.execute(sql, (sID,))   
     tuple_resultset = cur.fetchone()
     cur.close()
     return tuple_resultset
 
-def updateFirstshift(update, bID):
+def updateFirstshift(update, sID):
     cur = con.cursor()
     sql = '''
-    UPDATE harProgram
-    SET first_shift = first_shift + %s
+    UPDATE hasProgram
+    SET firstShift = firstShift + %s
     WHERE pID = %s           
     '''
-    cur.execute(sql, (update, bID,)) 
+    cur.execute(sql, (update, sID,)) 
     con.commit()  
     cur.close()
 
-def updateWeekday(update, bID):
+def updateWeekday(update, sID):
     cur = con.cursor()
     sql = '''
-    UPDATE harProgram
-    SET ugedag = %s
+    UPDATE hasProgram
+    SET weekDay = %s
     WHERE pID = %s           
     '''
-    cur.execute(sql, (update, bID,)) 
+    cur.execute(sql, (update, sID,)) 
     con.commit()  
     cur.close()
 
-def checkerForHarProgram(UpdateShop):
+def checkerForhasProgram(UpdateShop):
 
 #Adds entity if the attribute of a store is set to true
 
@@ -217,7 +217,7 @@ def checkerForHarProgram(UpdateShop):
 
     sql = '''
     INSERT INTO 
-        public.harProgram (pID) 
+        public.hasProgram (pID) 
     VALUES (%s);
     '''
     cur.execute(sql, (UpdateShop,))
@@ -229,14 +229,14 @@ def createUser(UpdateShop, StoreName):
 
     sql = '''
     INSERT INTO 
-        public.Volunteer (id, name) 
+        public.Volunteer (vID, name) 
     VALUES (%s,%s);
     '''
     cur.execute(sql, (UpdateShop,StoreName))
 
     con.commit()
 
-def deleteEntityHarProgram(UpdateShop):
+def deleteEntityHasProgram(UpdateShop):
 
 #Adds entity if the attribute of a store is set to true
 
@@ -244,7 +244,7 @@ def deleteEntityHarProgram(UpdateShop):
 
     sql = '''
     DELETE FROM 
-        public.harProgram
+        public.hasProgram
     WHERE pid = %s;
     '''
     cur.execute(sql, (UpdateShop,))
@@ -262,24 +262,24 @@ def deleteUser(UpdateShop):
     cur.execute(sql, (UpdateShop,))
     con.commit()
 
-def updateHarProgramToTrue(boolVal, UpdateShop):
+def updateHasProgramToTrue(boolVal, UpdateShop):
 #SQL update attribute of a store is to true
     cur = con.cursor()
     sql = '''
-    UPDATE butik 
-    SET har_program = %s 
-    WHERE bID = %s
+    UPDATE Store 
+    SET hasProgram = %s 
+    WHERE sID = %s
     '''
     cur.execute(sql, (boolVal, UpdateShop,))  
     con.commit()
 
-    checkerForHarProgram(UpdateShop)
+    checkerForhasProgram(UpdateShop)
 
 def checkForProgram(UpdateShop):
     cur = con.cursor()
     sql = '''
     SELECT * 
-    FROM harProgram
+    FROM hasProgram
     WHERE pID = %s
     '''
     cur.execute(sql, (UpdateShop,))  

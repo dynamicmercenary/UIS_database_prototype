@@ -82,7 +82,7 @@ def setWeekday():
     form.sourceWeekday.choices = drp_weekday
     Weekday = form.sourceWeekday.data 
     if form.validate_on_submit():
-        storeToUpdate = form.sourceShop.data
+        storeToUpdate = form.sourceStore.data
         print("StoreID: {}".format(storeToUpdate))
         print("New weekday {}".format(Weekday))
         updateWeekday(Weekday, storeToUpdate)

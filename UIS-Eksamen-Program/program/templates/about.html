@@ -1,16 +1,18 @@
 {% extends "layout.html" %}
 {% block content %}
     <h1>About Page</h1>
-	<p>This is the UIS prototype brought to you by the UIS team 2018/19.</p>
+	<p>This is the UIS prototype brought to you by the UIS Groupe 13 Exam project</p>
 	<ul>
-		<li>Ziming Lou</li>
-		<li>Lasse Pedersen</li>
-		<li>Jan Rolandsen</li>
-		<li>Hubert Dariusz Zajac</li>
+		<li>Anton Makki</li>
+		<li>Anders Vang Johansen</li>
+		<li>Simon Buch Kristensen</li>
+		<li>Christopher Frederik Sandberg Pettersson</li>
 
-	<p>You can register new customer accounts, but employee accouns must be entered by making your changes to the DML-script schema_ins.sql. To log in we have created some test accounts. The customer login can be accesed using a customer cpr in ranges 5001 to 5007 with the token 'UIS' in capital. The employee login can be accessed using employee id 6001..6007 and the same token.</p>
+	<p>You can register new store accounts, but the coordinator account must be entered by making your changes to the DML-script schema_ins.sql. To log in we have created a test coordinator account. 
+		The store login can be accesed using a volunteer ID in ranges 1 to 114 with the password 'UIS' in capital, but will first be active if you create an account from the coordinator login. The coordinator login can be accessed using coordinator id 6000 and the same password.</p>
 	<p>To add more sample data make your changes to the DML-script schema_ins.sql.</p>
-	<p>The prototype is vertical. We have implemented some functions and not completed. The prototype provides a starting point for your work.</p> 
-	<p>AL20190501</p>
+	<p>We have implemented most functions but it is not the complete program as the report describes. 
+		The prototype provides a starting point for our solution.</p>
+	<p>The missing functions are statistics on the stores, which the coordinator will be able to retrieve.</p>
 {% endblock content %}
 

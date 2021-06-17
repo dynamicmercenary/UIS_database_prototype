@@ -56,7 +56,7 @@ class AdjustAccountForm(FlaskForm):
     submit = SubmitField('Confirm')
 
 class setWeekdayForm(FlaskForm):
-    sourceShop = SelectField('Stores:', choices=[], coerce = str, validators=[DataRequired()])
+    sourceStore = SelectField('Stores:', choices=[], coerce = str, validators=[DataRequired()])
     sourceWeekday = SelectField('Which weekday?:', choices=[], coerce = str, validators=[DataRequired()])
     submit = SubmitField('Confirm')
     targetWeekday = StringField('New value:')

@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, redirect, request, Blueprint
 from program import app, con, bcrypt
 from program.forms import regionForm, scalaForm, contactinfoForm, harProgramForm
 from flask_login import current_user
-from program.sqllibrary import Coordinator, createUser, findStores, getRegions, findScala, deleteUser, getInfo, checkForProgram, deleteEntityHarProgram, updateHarProgramToTrue, getName
+from program.sqllibrary import Coordinator, createUser, findStores, getRegions, findScala, deleteUser, getInfo, checkForProgram, deleteEntityHasProgram, updateHasProgramToTrue, getName
 
 Coordinator = Blueprint('coordinator', __name__)
 
@@ -115,7 +115,7 @@ def UpdateHarProgram():
             return render_template('updateHarProgram.html', form = form)
         elif (updateBool == 'False' and check):
             storeName = getName(storeToUpdate)
-            deleteEntityHarProgram(storeToUpdate)
+            deleteEntityHasProgram(storeToUpdate)
             deleteUser(storeToUpdate)
             checkdelete = checkForProgram(storeToUpdate)
             print(checkdelete)
@@ -124,7 +124,7 @@ def UpdateHarProgram():
             return render_template('updateHarProgram.html', form = form)
         elif (updateBool == 'True' and not check):
             storeName = getName(storeToUpdate)
-            updateHarProgramToTrue(updateBool, storeToUpdate)
+            updateHasProgramToTrue(updateBool, storeToUpdate)
             createUser(storeToUpdate, storeName)
             checkcreate = checkForProgram(storeToUpdate)
             print(checkcreate)

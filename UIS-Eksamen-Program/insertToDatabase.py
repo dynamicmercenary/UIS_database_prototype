@@ -7,13 +7,13 @@ def getAttributes(filename):
 
         df = pd.read_excel (filename , sheet_name='Ark1', header=[0])
 
-        navn = df['Navn'].tolist()
+        name = df['Navn'].tolist()
         Region = df['Region'].tolist()
-        telefon = df['Tlf'].tolist()
+        telephone = df['Tlf'].tolist()
         email = df['Email'].tolist()
 
-        return navn, Region, telefon, email
-def checkerForHarProgramFalse():
+        return name, Region, telephone, email
+def checkerForHasProgramFalse():
 #Removes entity if the attribute of a store is set to false
     try:
         con = psycopg2.connect(database='program', user='postgres',
@@ -22,24 +22,24 @@ def checkerForHarProgramFalse():
         cur = con.cursor()
 
         cur.execute('''
-            SELECT bID 
-            FROM butik 
-            WHERE har_program = False;
+            SELECT sID 
+            FROM Store 
+            WHERE hasProgram = False;
             ''')
 
         recordb = cur.fetchall()
 
-        getBid = 0
+        getsID = 0
 
         for row in recordb:
 
-            getBid = row[0]
+            getsID = row[0]
 
             cur.execute('''
             SELECT * 
-            FROM harProgram 
+            FROM hasProgram 
             WHERE pID = {};
-            '''.format(getBid))
+            '''.format(getsID))
 
             recordp = cur.fetchall()
 
@@ -47,9 +47,9 @@ def checkerForHarProgramFalse():
 
                 cur.execute('''
                     DELETE FROM
-                        harProgram
+                        hasProgram
                     WHERE pID = {0};
-                    '''.format(getBid))
+                    '''.format(getsID))
 
                 con.commit()
 
@@ -63,7 +63,7 @@ def checkerForHarProgramFalse():
         if con:
             con.close()
 
-def checkerForHarProgramTrue():
+def checkerForHasProgramTrue():
 
 #Adds entity if the attribute of a store is set to true
 
@@ -74,24 +74,24 @@ def checkerForHarProgramTrue():
         cur = con.cursor()
 
         cur.execute('''
-            SELECT bID 
-            FROM butik 
-            WHERE har_program = True;
+            SELECT sID 
+            FROM Store 
+            WHERE hasProgram = True;
             ''')
 
         recordb = cur.fetchall()
 
-        getBid = 0
+        getsID = 0
 
         for row in recordb:
 
-            getBid = row[0]
+            getsID = row[0]
 
             cur.execute('''
             SELECT * 
-            FROM harProgram 
+            FROM hasProgram 
             WHERE pID = {};
-            '''.format(getBid))
+            '''.format(getsID))
 
             recordp = cur.fetchall()
 
@@ -99,9 +99,9 @@ def checkerForHarProgramTrue():
 
                 cur.execute('''
                     INSERT INTO 
-                        public.harProgram (pID) 
+                        public.hasProgram (pID) 
                     VALUES ({0});
-                    '''.format(getBid))
+                    '''.format(getsID))
 
                 con.commit()
 
@@ -115,7 +115,7 @@ def checkerForHarProgramTrue():
         if con:
             con.close()
 
-def updateHarProgramToTrue():
+def updateHasProgramToTrue():
 #SQL update attribute of a store is to true
     try:
         con = psycopg2.connect(database='program', user='postgres',
@@ -124,13 +124,13 @@ def updateHarProgramToTrue():
         cur = con.cursor()
         UpdateShop = input("Which storeID should be updated? ")
         cur.execute('''
-                UPDATE butik 
-                SET har_program = True 
-                WHERE bID = {};
+                UPDATE Store 
+                SET hasProgram = True 
+                WHERE sID = {};
                 '''.format(UpdateShop))
         con.commit()
 
-        checkerForHarProgramTrue()
+        checkerForHasProgramTrue()
 
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -139,7 +139,7 @@ def updateHarProgramToTrue():
         if con:
             con.close()
 
-def updateHarProgramToFalse():
+def updateHasProgramToFalse():
 
 #SQL update attribute of a store is to false
 
@@ -150,13 +150,13 @@ def updateHarProgramToFalse():
         cur = con.cursor()
         UpdateShop = input("Which storeID should be updated? ")
         cur.execute('''
-                UPDATE butik 
-                SET har_program = False 
-                WHERE bID = {};
+                UPDATE Store 
+                SET hasProgram = False 
+                WHERE sID = {};
                 '''.format(UpdateShop))
         con.commit()
 
-        checkerForHarProgramFalse()
+        checkerForHasProgramFalse()
 
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
@@ -177,8 +177,8 @@ while (Running):
 
     if ActionOption == "6":
 
-        checkerForHarProgramTrue()
-        checkerForHarProgramFalse()
+        checkerForHasProgramTrue()
+        checkerForHasProgramFalse()
 
     elif ActionOption == "7":
 
@@ -190,16 +190,16 @@ while (Running):
 
             cur = con.cursor()
 
-            navn, region, telefon, email = getAttributes('Butikker/Butikker.xlsx')
+            name, region, telephone, email = getAttributes('Butikker/Butikker.xlsx')
 
-            n = len(navn)
+            n = len(name)
 
             for i in range(n):   
             
                 cur.execute('''
-                SELECT navn
-                FROM butik
-                WHERE bID = {};
+                SELECT name
+                FROM Store
+                WHERE sID = {};
                 '''.format((i+1)))
 
                 exists = cur.fetchone()
@@ -207,9 +207,9 @@ while (Running):
                 if not exists:
 
                     cur.execute('''
-                    INSERT INTO public.butik(bID, navn, region, telefon, email) 
+                    INSERT INTO public.Store(sID, name, region, telephone, email) 
                     VALUES ({0}, '{1}', '{2}', '{3}', '{4}');
-                    '''.format((i+1), navn[i], region[i], telefon[i], email[i]))
+                    '''.format((i+1), name[i], region[i], telephone[i], email[i]))
             
                     con.commit()
                 else: 
